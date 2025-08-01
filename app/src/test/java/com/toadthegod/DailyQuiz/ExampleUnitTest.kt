@@ -1,4 +1,4 @@
-package com.toadthegod.dailyquiz
+package com.toadthegod.DailyQuiz
 
 import org.junit.Test
 

@@ -1,9 +1,9 @@
-package com.toadthegod.dailyquiz.data.question
+package com.toadthegod.DailyQuiz.data.question
 
 import android.util.Log
-import com.toadthegod.dailyquiz.data.question.network.QuestionApiService
-import com.toadthegod.dailyquiz.domain.model.question.Question
-import com.toadthegod.dailyquiz.data.question.model.toDomain
+import com.toadthegod.DailyQuiz.data.question.network.QuestionApiService
+import com.toadthegod.DailyQuiz.domain.model.question.Question
+import com.toadthegod.DailyQuiz.data.question.model.toDomain
 
 class QuestionRepository(private val apiService: QuestionApiService) {
     suspend fun getQuizQuestions(

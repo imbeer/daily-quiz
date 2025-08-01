@@ -1,4 +1,4 @@
-package com.toadthegod.dailyquiz
+package com.toadthegod.DailyQuiz
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,13 +11,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.toadthegod.dailyquiz.data.networkModule
-import com.toadthegod.dailyquiz.data.repositoryModule
-import com.toadthegod.dailyquiz.ui.theme.DailyQuizTheme
+import com.toadthegod.DailyQuiz.data.networkModule
+import com.toadthegod.DailyQuiz.data.repositoryModule
+import com.toadthegod.DailyQuiz.ui.component.AnswerState
+import com.toadthegod.DailyQuiz.ui.theme.DailyQuizTheme
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.compose.KoinApplication
 import org.koin.core.logger.Level
+import com.toadthegod.DailyQuiz.ui.component.SelectableAnswerRow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +35,11 @@ class MainActivity : ComponentActivity() {
             ) {
                 DailyQuizTheme {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        Greeting(
-                            name = "Android",
-                            modifier = Modifier.padding(innerPadding)
+                        SelectableAnswerRow(
+                            modifier = Modifier.padding(innerPadding),
+                            text = "text",
+                            state = AnswerState.CORRECT,
+                            onClick = {}
                         )
                     }
                 }

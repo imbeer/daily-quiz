@@ -1,4 +1,4 @@
-package com.toadthegod.dailyquiz.domain.model.question
+package com.toadthegod.DailyQuiz.domain.model.question
 
 data class Question(
     val questionText: String,

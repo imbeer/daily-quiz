@@ -1,5 +1,5 @@
-package com.toadthegod.dailyquiz.data.question.network
-import com.toadthegod.dailyquiz.data.question.model.QuizDTO
+package com.toadthegod.DailyQuiz.data.question.network
+import com.toadthegod.DailyQuiz.data.question.model.QuizDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 

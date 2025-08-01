@@ -1,7 +1,7 @@
-package com.toadthegod.dailyquiz.data.question.model
+package com.toadthegod.DailyQuiz.data.question.model
 
 import android.text.Html
-import com.toadthegod.dailyquiz.domain.model.question.Question
+import com.toadthegod.DailyQuiz.domain.model.question.Question
 
 fun QuestionDTO.toDomain(): Question {
     val decodedQuestion = Html.fromHtml(this.question, Html.FROM_HTML_MODE_LEGACY).toString()

@@ -1,4 +1,4 @@
-package com.toadthegod.dailyquiz.data.question.model
+package com.toadthegod.DailyQuiz.data.question.model
 
 import com.squareup.moshi.Json
 
