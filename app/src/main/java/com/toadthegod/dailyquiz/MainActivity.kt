@@ -1,4 +1,4 @@
-package com.toadthegod.DailyQuiz
+package com.toadthegod.dailyquiz
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,19 +11,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.toadthegod.DailyQuiz.ui.theme.DailyQuizTheme
+import com.toadthegod.dailyquiz.data.networkModule
+import com.toadthegod.dailyquiz.data.repositoryModule
+import com.toadthegod.dailyquiz.ui.theme.DailyQuizTheme
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.compose.KoinApplication
+import org.koin.core.logger.Level
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            DailyQuizTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            KoinApplication(
+                application = {
+                    androidLogger(Level.DEBUG)
+                    androidContext(this@MainActivity)
+                    modules(networkModule, repositoryModule)
+                }
+            ) {
+                DailyQuizTheme {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        Greeting(
+                            name = "Android",
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    }
                 }
             }
         }

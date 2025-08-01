@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.toadthegod.DailyQuiz"
+    namespace = "com.toadthegod.dailyquiz"
     compileSdk = 36
 
     defaultConfig {

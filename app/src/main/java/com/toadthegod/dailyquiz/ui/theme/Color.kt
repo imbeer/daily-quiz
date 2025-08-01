@@ -1,4 +1,4 @@
-package com.toadthegod.DailyQuiz.ui.theme
+package com.toadthegod.dailyquiz.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
