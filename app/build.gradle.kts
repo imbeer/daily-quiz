@@ -6,21 +6,17 @@ plugins {
 }
 
 android {
-    namespace = "com.toadthegod.DailyQuiz"
+    namespace = "com.toadthegod.dailyquiz"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.toadthegod.DailyQuiz"
+        applicationId = "com.toadthegod.dailyquiz"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildFeatures {
-        compose = true
     }
 
     buildTypes {
@@ -42,7 +38,9 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
+
 
 dependencies {
 
@@ -54,24 +52,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converters.moshi)
-    implementation(libs.moshi.kotlin)
-    ksp(libs.moshi.kotlin.codegen)
-
-    implementation(project.dependencies.platform(libs.koin.bom))
-    implementation(libs.koin.core)
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.androidx.compose.navigation)
-
-    implementation(libs.composeDestinations.core)
-    implementation(libs.composeDestinations.bottomSheet)
-    ksp(libs.composeDestinations.ksp)
-
-    implementation("androidx.compose.material:material-icons-extended:1.6.7")
-
+    implementation(libs.androidx.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,4 +60,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.compose.navigation)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converters.moshi)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
+
+    implementation(libs.composeDestinations.core)
+    ksp(libs.composeDestinations.ksp)
+
 }
