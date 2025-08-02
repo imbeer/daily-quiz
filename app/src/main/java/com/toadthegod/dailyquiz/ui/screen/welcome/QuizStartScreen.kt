@@ -130,7 +130,9 @@ fun LoadingState() {
         )
         Spacer(modifier = Modifier.height(48.dp))
         CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onPrimary,
+            strokeWidth = 4.dp,
+            trackColor = MaterialTheme.colorScheme.onSurface
         )
     }
 }
