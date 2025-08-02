@@ -1,8 +1,9 @@
 package com.toadthegod.dailyquiz.data.question.model
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-
+@JsonClass(generateAdapter = true)
 data class QuestionDTO(
     @field:Json(name = "category")
     val category: String,
@@ -23,6 +24,7 @@ data class QuestionDTO(
     val incorrectAnswers: List<String>
 )
 
+@JsonClass(generateAdapter = true)
 data class QuizDTO(
     @field:Json(name = "response_code")
     val responseCode: Int,

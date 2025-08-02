@@ -170,7 +170,7 @@ fun WelcomeState(
                 contentDescription = stringResource(R.string.logo)
             )
             Spacer(modifier = Modifier.height(42.dp))
-            WelcomeCard { onStartClick }
+            WelcomeCard { onStartClick() }
         }
     }
 }
@@ -183,7 +183,6 @@ fun WelcomeState(
 @Composable
 fun QuizStartScreen(
     navigator: DestinationsNavigator,
-    modifier: Modifier = Modifier
 ) {
     val viewModel = koinViewModel<QuizStartViewModel>()
     val uiState by viewModel.uiState.collectAsState()
