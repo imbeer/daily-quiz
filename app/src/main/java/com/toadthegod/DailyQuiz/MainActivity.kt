@@ -20,6 +20,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.compose.KoinApplication
 import org.koin.core.logger.Level
 import com.toadthegod.DailyQuiz.ui.component.SelectableAnswerRow
+import com.toadthegod.DailyQuiz.ui.welcome.QuizStartScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,12 +36,13 @@ class MainActivity : ComponentActivity() {
             ) {
                 DailyQuizTheme {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        SelectableAnswerRow(
-                            modifier = Modifier.padding(innerPadding),
-                            text = "text",
-                            state = AnswerState.CORRECT,
-                            onClick = {}
-                        )
+//                        SelectableAnswerRow(
+//                            modifier = Modifier.padding(innerPadding),
+//                            text = "text",
+//                            state = AnswerState.CORRECT,
+//                            onClick = {}
+//                        )
+                        QuizStartScreen(Modifier.padding(innerPadding))
                     }
                 }
             }

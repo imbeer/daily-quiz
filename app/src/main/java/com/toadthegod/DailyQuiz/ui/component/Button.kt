@@ -89,8 +89,8 @@ fun AccentButton(
         modifier = modifier,
         text = text,
         onClick = onClick,
-        color = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         enabled = enabled
     )
 }
