@@ -105,37 +105,37 @@ fun WelcomeCard() {
 
 @Composable
 fun QuizStartScreen(modifier: Modifier = Modifier) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .height(256.dp)
+                .height(208.dp)
         ) {
             HistoryButton(
                 modifier = modifier
                     .align(Alignment.Center)
-                    .padding(16.dp)
+//                    .padding(16.dp)
             )
         }
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             Image(
-                modifier = modifier.padding(20.dp),
+                modifier = Modifier.padding(20.dp),
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(R.string.logo)
             )
 
-            Spacer(modifier = modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(42.dp))
 
             WelcomeCard()
         }
@@ -143,7 +143,7 @@ fun QuizStartScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-@Preview
+@Preview(showSystemUi = true, showBackground = true)
 fun preview() {
     DailyQuizTheme {
         QuizStartScreen()

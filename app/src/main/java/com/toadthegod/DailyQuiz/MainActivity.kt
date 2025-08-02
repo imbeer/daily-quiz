@@ -36,12 +36,6 @@ class MainActivity : ComponentActivity() {
             ) {
                 DailyQuizTheme {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                        SelectableAnswerRow(
-//                            modifier = Modifier.padding(innerPadding),
-//                            text = "text",
-//                            state = AnswerState.CORRECT,
-//                            onClick = {}
-//                        )
                         QuizStartScreen(Modifier.padding(innerPadding))
                     }
                 }
