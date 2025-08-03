@@ -3,6 +3,7 @@ package com.toadthegod.dailyquiz.ui.screen.result
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,12 +39,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.QuizStartScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.toadthegod.dailyquiz.ui.component.AccentButton
 import com.toadthegod.dailyquiz.R
 import com.toadthegod.dailyquiz.domain.model.question.Answer
 import com.toadthegod.dailyquiz.domain.model.question.Question
 import com.toadthegod.dailyquiz.ui.ScreenTransitions
+import com.toadthegod.dailyquiz.ui.component.AccentButton
 import com.toadthegod.dailyquiz.ui.component.AnswerState
+import com.toadthegod.dailyquiz.ui.component.NormalButton
 import com.toadthegod.dailyquiz.ui.component.RatingBar
 import com.toadthegod.dailyquiz.ui.component.SelectableAnswerRow
 import com.toadthegod.dailyquiz.ui.theme.DailyQuizTheme
@@ -94,6 +97,7 @@ fun Title(rating: Int, maxRating: Int = 5) {
         modifier = Modifier.padding(top = 8.dp)
     )
 }
+
 @Destination<RootGraph>(style = ScreenTransitions::class)
 @Composable
 fun ResultScreen(
@@ -150,12 +154,18 @@ fun ResultScreenContent(
                 )
             }
 
-            itemsIndexed(results, key = { _, result -> result.question.questionText }) { index, result ->
+            itemsIndexed(
+                results,
+                key = { _, result -> result.question.questionText }) { index, result ->
                 QuestionReviewCard(
                     questionIndex = index,
                     totalQuestions = maxRating,
                     result = result
                 )
+            }
+
+            item {
+                TryAgainButton( onClick = onRestartClick )
             }
         }
     }
@@ -230,7 +240,11 @@ fun QuestionReviewCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.question_progress, questionIndex + 1, totalQuestions),
+                    text = stringResource(
+                        R.string.question_progress,
+                        questionIndex + 1,
+                        totalQuestions
+                    ),
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
@@ -267,6 +281,25 @@ fun QuestionReviewCard(
     }
 }
 
+@Composable
+fun TryAgainButton(
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        NormalButton(
+            onClick = onClick,
+            modifier = Modifier
+                .width(260.dp)
+                .padding(start = 6.dp, end = 6.dp)
+                .height(50.dp),
+            text = stringResource(R.string.restart),
+        )
+    }
+}
+
 private fun determineAnswerState(
     answerText: String,
     correctAnswer: String,
@@ -287,11 +320,23 @@ private fun determineAnswerState(
 fun ResultScreenContentPreview() {
     val fakeResults = listOf(
         Result(
-            question = Question("Как переводится слово «apple»?", "Яблоко", listOf("Груша", "Яблоко", "Апельсин", "Ананас"), "", ""),
+            question = Question(
+                "Как переводится слово «apple»?",
+                "Яблоко",
+                listOf("Груша", "Яблоко", "Апельсин", "Ананас"),
+                "",
+                ""
+            ),
             answer = Answer(true, "Яблоко")
         ),
         Result(
-            question = Question("Какое слово означает цвет?", "Red", listOf("Table", "Chair", "Red", "Book"), "", ""),
+            question = Question(
+                "Какое слово означает цвет?",
+                "Red",
+                listOf("Table", "Chair", "Red", "Book"),
+                "",
+                ""
+            ),
             answer = Answer(false, "Table")
         )
     )
