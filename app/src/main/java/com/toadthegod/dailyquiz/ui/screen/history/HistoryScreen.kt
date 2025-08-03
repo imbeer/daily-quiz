@@ -2,26 +2,27 @@ package com.toadthegod.dailyquiz.ui.screen.history
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.toadthegod.DailyQuчiz.ui.component.AccentButton
@@ -115,23 +117,42 @@ fun HistoryItemCard(
             }
         }
 
-        DropdownMenu(
-            expanded = showDeleteMenu,
-            onDismissRequest = { showDeleteMenu = false }
-        ) {
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.delete)) },
-                onClick = {
-                    onDelete()
-                    showDeleteMenu = false
-                },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.delete)
-                    )
+        if (showDeleteMenu) {
+            Popup(
+                onDismissRequest = { showDeleteMenu = false },
+                alignment = Alignment.BottomEnd
+            ) {
+                Card(
+                    modifier = Modifier
+                        .width(IntrinsicSize.Min)
+                        .clickable {
+                            onDelete()
+                            showDeleteMenu = false
+                        },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.trash_icon),
+                            contentDescription = stringResource(R.string.delete),
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.delete),
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
                 }
-            )
+            }
         }
     }
 }
@@ -233,8 +254,7 @@ fun EmptyHistoryScreen(onStartQuizClick: () -> Unit) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
-                            .padding(horizontal = 6.dp)
-                        ,
+                            .padding(horizontal = 6.dp),
                         text = stringResource(R.string.start_quiz),
                         enabled = true
                     )

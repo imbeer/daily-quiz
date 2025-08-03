@@ -93,12 +93,10 @@ fun ResultScreen(
     val viewModel: ResultViewModel = koinViewModel<ResultViewModel>()
     val quizRating by viewModel.quizRating.collectAsState()
     val results by viewModel.results.collectAsState()
-//
+
     val rating = quizRating!!.rating
     val maxRating = quizRating!!.maxRating
 
-//    val rating = 4
-//    val maxRating = 5
 
     Scaffold { paddingValues ->
         Box(modifier = Modifier
