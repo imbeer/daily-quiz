@@ -14,3 +14,4 @@
 
 ## Releases
 [v0.1](https://github.com/imbeer/daily-quiz/releases/tag/v0.1)
+[video](https://drive.google.com/file/d/1TMwj3Qn2wnQz3EMOpKGlX-TlvnUieNnq/view?usp=sharing)
