@@ -1,6 +1,5 @@
 package com.toadthegod.dailyquiz.ui.screen.history
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -55,16 +54,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.QuestionScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.QuizStartScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.toadthegod.dailyquiz.ui.component.AccentButton
 import com.toadthegod.dailyquiz.R
 import com.toadthegod.dailyquiz.data.question.QuizResult
 import com.toadthegod.dailyquiz.domain.model.question.Quiz
 import com.toadthegod.dailyquiz.ui.ScreenTransitions
+import com.toadthegod.dailyquiz.ui.component.AccentButton
 import com.toadthegod.dailyquiz.ui.component.RatingBar
-import com.toadthegod.dailyquiz.ui.screen.welcome.WelcomeEvent
 import com.toadthegod.dailyquiz.ui.theme.DailyQuizTheme
 import com.toadthegod.dailyquiz.util.formatDate
 import com.toadthegod.dailyquiz.util.formatTime
@@ -85,7 +82,10 @@ fun HistoryScreen(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is HistoryEvent.Deleted -> {
-                    snackbarHostState.showSnackbar(context.getString(R.string.deleted_history), duration = SnackbarDuration.Short)
+                    snackbarHostState.showSnackbar(
+                        context.getString(R.string.deleted_history),
+                        duration = SnackbarDuration.Short
+                    )
                 }
             }
         }

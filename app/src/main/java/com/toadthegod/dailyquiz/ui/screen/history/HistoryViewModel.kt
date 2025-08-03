@@ -4,14 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.toadthegod.dailyquiz.data.question.QuizHistoryRepository
 import com.toadthegod.dailyquiz.data.question.QuizResult
-import com.toadthegod.dailyquiz.ui.screen.welcome.WelcomeEvent
-import com.toadthegod.dailyquiz.ui.screen.welcome.WelcomeUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
