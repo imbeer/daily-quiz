@@ -13,6 +13,7 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.toadthegod.dailyquiz.data.networkModule
 import com.toadthegod.dailyquiz.data.repositoryModule
+import com.toadthegod.dailyquiz.data.dbModule
 import com.toadthegod.dailyquiz.ui.theme.DailyQuizTheme
 import com.toadthegod.dailyquiz.ui.uiModule
 import org.koin.android.ext.koin.androidContext
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 application = {
                     androidLogger(Level.DEBUG)
                     androidContext(this@MainActivity)
-                    modules(networkModule, repositoryModule, uiModule)
+                    modules(networkModule, dbModule, repositoryModule, uiModule)
                 }
             ) {
                 val navController = rememberNavController()
