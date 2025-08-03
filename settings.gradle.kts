@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "dailyquiz"
 include(":app")
+
