@@ -29,8 +29,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.QuestionScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.QuizStartScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.toadthegod.dailyquiz.ui.component.AccentButton
@@ -58,6 +64,7 @@ import com.toadthegod.dailyquiz.data.question.QuizResult
 import com.toadthegod.dailyquiz.domain.model.question.Quiz
 import com.toadthegod.dailyquiz.ui.ScreenTransitions
 import com.toadthegod.dailyquiz.ui.component.RatingBar
+import com.toadthegod.dailyquiz.ui.screen.welcome.WelcomeEvent
 import com.toadthegod.dailyquiz.ui.theme.DailyQuizTheme
 import com.toadthegod.dailyquiz.util.formatDate
 import com.toadthegod.dailyquiz.util.formatTime
@@ -70,6 +77,19 @@ fun HistoryScreen(
 ) {
     val viewModel: HistoryViewModel = koinViewModel()
     val historyState by viewModel.quizHistory.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is HistoryEvent.Deleted -> {
+                    snackbarHostState.showSnackbar(context.getString(R.string.deleted_history), duration = SnackbarDuration.Short)
+                }
+            }
+        }
+    }
 
     HistoryScreenContent(
         historyItems = historyState,
@@ -77,7 +97,8 @@ fun HistoryScreen(
             viewModel.deleteQuiz(quizResult)
         },
         onStartQuizClick = { navigator.navigate(QuizStartScreenDestination) },
-        onReturnBackClick = { navigator.navigateUp() }
+        onReturnBackClick = { navigator.navigateUp() },
+        snackbarHostState = snackbarHostState
     )
 }
 
@@ -88,8 +109,11 @@ fun HistoryScreenContent(
     onDeleteClick: (QuizResult) -> Unit,
     onStartQuizClick: () -> Unit,
     onReturnBackClick: () -> Unit,
+    snackbarHostState: SnackbarHostState
 ) {
-    Scaffold { paddingValues ->
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -185,12 +209,12 @@ fun EmptyHistoryScreen(onStartQuizClick: () -> Unit) {
             }
         }
 
-        Image(
-            modifier = Modifier.padding(horizontal = 70.dp, vertical = 64.dp),
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = stringResource(R.string.logo),
-//            alignment = Alignment.BottomCenter
-        )
+//        Image(
+//            modifier = Modifier.padding(horizontal = 70.dp, vertical = 64.dp),
+//            painter = painterResource(id = R.drawable.logo),
+//            contentDescription = stringResource(R.string.logo),
+////            alignment = Alignment.BottomCenter
+//        )
     }
 }
 
@@ -303,7 +327,8 @@ fun HistoryScreenContent_Preview_Empty() {
             historyItems = emptyList(),
             onDeleteClick = {},
             onStartQuizClick = {},
-            onReturnBackClick = {}
+            onReturnBackClick = {},
+            snackbarHostState = SnackbarHostState()
         )
     }
 }
@@ -327,7 +352,8 @@ fun HistoryScreenContent_Preview_WithData() {
             historyItems = fakeItems,
             onDeleteClick = {},
             onStartQuizClick = {},
-            onReturnBackClick = {}
+            onReturnBackClick = {},
+            snackbarHostState = SnackbarHostState()
         )
     }
 }

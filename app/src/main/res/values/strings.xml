@@ -29,4 +29,6 @@
     <string name="quiz_number">Quiz %1$d</string>
     <string name="correct_answer">Correct Answer</string>
     <string name="incorrect_answer">Incorrect Answer</string>
+    <string name="error">Ошибка! Попробуйте еще раз</string>
+    <string name="deleted_history">Попытка удалена. Вы можете пройти викторину снова, когда будете готовы.</string>
 </resources>
