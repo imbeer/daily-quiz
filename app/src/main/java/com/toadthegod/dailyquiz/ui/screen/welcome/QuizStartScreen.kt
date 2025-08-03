@@ -50,8 +50,7 @@ import com.ramcosta.composedestinations.generated.destinations.QuestionScreenDes
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.toadthegod.dailyquiz.R
 import com.toadthegod.dailyquiz.ui.ScreenTransitions
-import com.toadthegod.DailyQuчiz.ui.component.AccentButton
-import com.toadthegod.dailyquiz.ui.screen.history.HistoryScreen
+import com.toadthegod.dailyquiz.ui.component.AccentButton
 import org.koin.androidx.compose.koinViewModel
 
 

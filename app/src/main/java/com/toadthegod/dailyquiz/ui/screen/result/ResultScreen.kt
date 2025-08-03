@@ -37,7 +37,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.QuizStartScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.toadthegod.DailyQuчiz.ui.component.AccentButton
+import com.toadthegod.dailyquiz.ui.component.AccentButton
 import com.toadthegod.dailyquiz.R
 import com.toadthegod.dailyquiz.domain.model.question.Answer
 import com.toadthegod.dailyquiz.domain.model.question.Question
@@ -103,9 +103,7 @@ fun ResultScreen(
     val quizRating by viewModel.quizRating.collectAsState()
     val results by viewModel.results.collectAsState()
 
-    // Предохранитель на случай, если данные еще не загружены
     if (quizRating == null || results.isEmpty()) {
-        // Здесь можно показать индикатор загрузки
         return
     }
 
@@ -117,7 +115,6 @@ fun ResultScreen(
     )
 }
 
-// --- 2. STATELESS SCREEN ---
 @Composable
 fun ResultScreenContent(
     rating: Int,

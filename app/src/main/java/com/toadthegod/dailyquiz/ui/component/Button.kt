@@ -1,4 +1,4 @@
-package com.toadthegod.DailyQuчiz.ui.component
+package com.toadthegod.dailyquiz.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

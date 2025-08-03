@@ -1,7 +1,7 @@
 package com.toadthegod.dailyquiz.ui.screen.quiz
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,17 +10,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ramcosta.composedestinations.annotation.Destination
@@ -40,27 +44,61 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.QuizStartScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ResultScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.toadthegod.DailyQuчiz.ui.component.AccentButton
+import com.toadthegod.dailyquiz.ui.component.AccentButton
 import com.toadthegod.dailyquiz.R
+import com.toadthegod.dailyquiz.domain.model.question.Question
 import com.toadthegod.dailyquiz.ui.ScreenTransitions
 import com.toadthegod.dailyquiz.ui.component.AnswerState
 import com.toadthegod.dailyquiz.ui.component.SelectableAnswerRow
+import com.toadthegod.dailyquiz.ui.theme.DailyQuizTheme
 import org.koin.androidx.compose.koinViewModel
-
 
 @Destination<RootGraph>(style = ScreenTransitions::class)
 @Composable
-fun QuestionScreen(
-    navigator: DestinationsNavigator
-) {
-    val viewModel = koinViewModel<QuestionViewModel>()
+fun QuestionScreen(navigator: DestinationsNavigator) {
+    val viewModel: QuestionViewModel = koinViewModel()
     val currentQuestion by viewModel.question.collectAsState()
-    val currentState by viewModel.questionState.collectAsState()
+    val quizState by viewModel.questionState.collectAsState()
+
     var selectedOption by remember { mutableStateOf<String?>(null) }
-    val options = currentQuestion?.allAnswers
-    val isFinalQuestion = currentState!!.number == currentState!!.size
+    LaunchedEffect(currentQuestion) {
+        selectedOption = null
+    }
 
+    QuestionScreenContent(
+        question = currentQuestion,
+        quizState = quizState,
+        selectedOption = selectedOption,
+        onAnswerSelected = { option ->
+            selectedOption = if (selectedOption == option) null else option
+        },
+        onNextClick = {
+            viewModel.saveAnswer(selectedOption!!)
+            viewModel.nextQuestion()
+        },
+        onFinishClick = {
+            viewModel.saveAnswer(selectedOption!!)
+            viewModel.finish()
+            navigator.navigate(ResultScreenDestination) {
+                popUpTo(QuizStartScreenDestination) { inclusive = true }
+            }
+        },
+        onBackClick = {
+            navigator.popBackStack(QuizStartScreenDestination, inclusive = false)
+        }
+    )
+}
 
+@Composable
+fun QuestionScreenContent(
+    question: Question?,
+    quizState: QuizState?,
+    selectedOption: String?,
+    onAnswerSelected: (String) -> Unit,
+    onNextClick: () -> Unit,
+    onFinishClick: () -> Unit,
+    onBackClick: () -> Unit
+) {
     Scaffold { paddingValues ->
         Column(
             modifier = Modifier
@@ -68,110 +106,157 @@ fun QuestionScreen(
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
+            Spacer(modifier = Modifier.height(24.dp))
+
+            QuestionTopBar(
+                isFinalQuestion = quizState?.number == quizState?.size,
+                onBackClick = onBackClick
+            )
+
             Spacer(modifier = Modifier.height(40.dp))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
-            ) {
-
-                if (!isFinalQuestion) {
-                    IconButton(
-                        onClick = { navigator.navigate(QuizStartScreenDestination) },
-                        modifier = Modifier
-                            .size(24.dp)
-                            .background(Color.Transparent)
-                            .align(Alignment.CenterStart)
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
+            if (question == null || quizState == null) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
                 }
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = stringResource(R.string.dailyquiz_logo),
-                    modifier = Modifier
-                        .height(36.dp)
-                        .align(Alignment.Center)
+            } else {
+                QuestionCard(
+                    question = question,
+                    quizState = quizState,
+                    selectedOption = selectedOption,
+                    onAnswerSelected = onAnswerSelected,
+                    onNextClick = onNextClick,
+                    onFinishClick = onFinishClick
                 )
             }
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.height(40.dp))
-
-            Card(
-                shape = RoundedCornerShape(40.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                modifier = Modifier.fillMaxWidth()
+@Composable
+private fun QuestionTopBar(isFinalQuestion: Boolean, onBackClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 40.dp)
+    ) {
+        if (!isFinalQuestion) {
+            IconButton(
+                onClick = onBackClick,
+                modifier = Modifier
+                    .size(36.dp)
+                    .align(Alignment.CenterStart)
             ) {
-                Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)) {
-                    Text(
-                        text = String.format(
-                            stringResource(R.string.question_progress),
-                            currentState?.number,
-                            currentState?.size
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
-                    currentQuestion?.questionText?.let {
-                        Text(
-                            text = it,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = Color.Black,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(24.dp))
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = stringResource(R.string.dailyquiz_logo),
+            modifier = Modifier
+                .width(180.dp)
+                .align(Alignment.Center)
+        )
+    }
+}
 
-                    options?.forEach { option ->
-                        SelectableAnswerRow(
-                            text = option,
-                            state = if (selectedOption == option) AnswerState.SELECTED
-                            else AnswerState.UNSELECTED,
-                            onClick = {
-                                selectedOption = if (selectedOption != option) option else null
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-                    Spacer(modifier = Modifier.height(60.dp))
-                    AccentButton(
-                        text = if (!isFinalQuestion) stringResource(R.string.next_question)
-                        else stringResource(R.string.finish_quiz),
+@Composable
+private fun QuestionCard(
+    question: Question,
+    quizState: QuizState,
+    selectedOption: String?,
+    onAnswerSelected: (String) -> Unit,
+    onNextClick: () -> Unit,
+    onFinishClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(40.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.question_progress, quizState.number, quizState.size),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium,
+                fontSize = 14.sp
+            )
+            Spacer(modifier = Modifier.height(24.dp))
 
-                        enabled = selectedOption != null,
-                        onClick = if (!isFinalQuestion) ({
-                            viewModel.saveAnswer(selectedOption!!)
-                            viewModel.nextQuestion()
-                        }) else ({
-                            viewModel.finish()
-                            navigator.navigate(ResultScreenDestination)
-                        }),
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .fillMaxWidth()
-                            .height(50.dp)
+            Text(
+                text = question.questionText,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                question.allAnswers.forEach { option ->
+                    SelectableAnswerRow(
+                        text = option,
+                        state = if (selectedOption == option) AnswerState.SELECTED else AnswerState.UNSELECTED,
+                        onClick = { onAnswerSelected(option) }
                     )
                 }
             }
-            Text(
-                text = stringResource(R.string.no_come_back),
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+
+            Spacer(modifier = Modifier.height(60.dp))
+
+            val isFinalQuestion = quizState.number == quizState.size
+            AccentButton(
+                text = if (!isFinalQuestion) stringResource(R.string.next_question) else stringResource(R.string.finish_quiz),
+                enabled = selectedOption != null,
+                onClick = if (!isFinalQuestion) onNextClick else onFinishClick,
+                modifier = Modifier
+                    .padding(horizontal = 6.dp)
+                    .fillMaxWidth()
+                    .height(50.dp)
             )
         }
+    }
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Text(
+        text = stringResource(R.string.no_come_back),
+        fontSize = 10.sp,
+        fontWeight = FontWeight.Normal,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionScreenContentPreview() {
+    val previewQuestion = Question(
+        questionText = "What is the capital of France?",
+        allAnswers = listOf("Berlin", "Madrid", "Paris", "Rome"),
+        correctAnswer = "Paris",
+        category = "Geography",
+        difficulty = "Easy"
+    )
+    val previewQuizState = QuizState(number = 3, size = 10)
+
+    DailyQuizTheme {
+        QuestionScreenContent(
+            question = previewQuestion,
+            quizState = previewQuizState,
+            selectedOption = "Paris",
+            onAnswerSelected = {},
+            onNextClick = {},
+            onFinishClick = {},
+            onBackClick = {}
+        )
     }
 }

@@ -52,7 +52,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.QuizStartScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.toadthegod.DailyQuчiz.ui.component.AccentButton
+import com.toadthegod.dailyquiz.ui.component.AccentButton
 import com.toadthegod.dailyquiz.R
 import com.toadthegod.dailyquiz.data.question.QuizResult
 import com.toadthegod.dailyquiz.domain.model.question.Quiz
