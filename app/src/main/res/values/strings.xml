@@ -8,7 +8,7 @@
     <string name="next_question">ДАЛЕЕ</string>
     <string name="back">Назад</string>
     <string name="dailyquiz_logo">DailyQuiz Logo</string>
-    <string name="question_number">Вопрос %d из %d</string>
+    <string name="question_progress">Вопрос %d из %d</string>
     <string name="finish_quiz">Завершить</string>
     <string name="result_screen_name">Результаты</string>
     <string name="restart">НАЧАТЬ ЗАНОВО</string>
@@ -18,7 +18,7 @@
     <string name="ok_result_title">Хороший результат!</string>
     <string name="bad_result_title">Есть над чем поработать</string>
     <string name="almost_worst_result_title">Сложный вопрос?</string>
-    <string name="victory">%1$d / %2$d — вы ответили на всё правильно. Это блестящий результат!</string>
+    <string name="victory">%1$d/%2$d — вы ответили на всё правильно. Это блестящий результат!</string>
     <string name="almost_victory">%1$d/%2$d — очень близко к совершенству. Ещё один шаг!</string>
     <string name="ok_result">%1$d/%2$d — вы на верном пути. Продолжайте тренироваться!</string>
     <string name="bad_result">%1$d/%2$d — не расстраивайтесь, попробуйте ещё раз!</string>

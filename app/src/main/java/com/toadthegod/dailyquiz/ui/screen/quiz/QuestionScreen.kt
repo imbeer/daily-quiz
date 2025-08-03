@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -33,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ramcosta.composedestinations.annotation.Destination
@@ -113,7 +113,7 @@ fun QuestionScreen(
                 Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)) {
                     Text(
                         text = String.format(
-                            stringResource(R.string.question_number),
+                            stringResource(R.string.question_progress),
                             currentState?.number,
                             currentState?.size
                         ),
@@ -129,7 +129,8 @@ fun QuestionScreen(
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
                             color = Color.Black,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                     Spacer(modifier = Modifier.height(24.dp))
