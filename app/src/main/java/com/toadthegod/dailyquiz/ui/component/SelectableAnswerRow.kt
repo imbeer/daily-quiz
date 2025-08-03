@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -16,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.toadthegod.dailyquiz.R
 import com.toadthegod.dailyquiz.ui.theme.success
 
@@ -33,7 +36,7 @@ enum class AnswerState {
 fun SelectableAnswerRow(
     modifier: Modifier = Modifier,
     text: String = "text",
-    state: AnswerState = AnswerState.SELECTED,
+    state: AnswerState = AnswerState.UNSELECTED,
     onClick: () -> Unit = {}
 ) {
     data class AnswerStyle(
@@ -45,15 +48,15 @@ fun SelectableAnswerRow(
 
     val style = when (state) {
         AnswerState.UNSELECTED -> AnswerStyle(
-            borderColor = MaterialTheme.colorScheme.outline,
-            backgroundColor = MaterialTheme.colorScheme.surface,
-            textColor = MaterialTheme.colorScheme.secondary,
+            borderColor = MaterialTheme.colorScheme.secondary,
+            backgroundColor = MaterialTheme.colorScheme.secondary,
+            textColor = MaterialTheme.colorScheme.onSecondary,
             iconId = R.drawable.radio_button_unselected
         )
         AnswerState.SELECTED -> AnswerStyle(
             borderColor = MaterialTheme.colorScheme.outline,
             backgroundColor = MaterialTheme.colorScheme.surface,
-            textColor = MaterialTheme.colorScheme.primary,
+            textColor = MaterialTheme.colorScheme.outline,
             iconId = R.drawable.radio_button_selected
         )
         AnswerState.CORRECT -> AnswerStyle(
@@ -85,12 +88,15 @@ fun SelectableAnswerRow(
             Image(
                 painter = painterResource(style.iconId),
                 contentDescription = null,
+                modifier = Modifier.size(20.dp),
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge,
-                color = style.textColor
+                color = style.textColor,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal
             )
         }
     }

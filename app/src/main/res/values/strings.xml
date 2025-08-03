@@ -4,4 +4,10 @@
     <string name="history_button">История</string>
     <string name="welcome_title">Добро пожаловать\nв DailyQuiz!</string>
     <string name="start_quiz">Начать викторину</string>
+    <string name="no_come_back">Вернуться к предыдущим вопросам нельзя</string>
+    <string name="next_question">ДАЛЕЕ</string>
+    <string name="back">Назад</string>
+    <string name="dailyquiz_logo">DailyQuiz Logo</string>
+    <string name="question_number">Вопрос %d из %d</string>
+    <string name="finish_quiz">Завершить</string>
 </resources>

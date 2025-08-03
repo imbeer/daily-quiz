@@ -1,9 +1,8 @@
 package com.toadthegod.dailyquiz.ui.screen.welcome
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.toadthegod.dailyquiz.data.question.QuestionCache
+import com.toadthegod.dailyquiz.data.question.QuizCache
 import com.toadthegod.dailyquiz.data.question.QuestionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +22,10 @@ sealed interface WelcomeEvent {
     data class ShowError(val message: String) : WelcomeEvent
 }
 
-class QuizStartViewModel(private val questionRepository: QuestionRepository) : ViewModel() {
+class QuizStartViewModel(
+    private val questionRepository: QuestionRepository,
+    private val quizCache: QuizCache
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(WelcomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -33,12 +35,12 @@ class QuizStartViewModel(private val questionRepository: QuestionRepository) : V
     fun load() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-                val questions = withContext(Dispatchers.IO) {
-                    questionRepository.getQuizQuestions()
-                }
-            questions.onSuccess { questions ->
-                QuestionCache.clear()
-                QuestionCache.saveQuestions(questions)
+            val fetchedQuestions = withContext(Dispatchers.IO) {
+                questionRepository.getQuizQuestions()
+            }
+            fetchedQuestions.onSuccess { questions ->
+                quizCache.clear()
+                quizCache.saveQuestions(questions)
                 _eventFlow.emit(WelcomeEvent.NavigateToQuiz)
             }.onFailure { exception ->
                 _eventFlow.emit(WelcomeEvent.ShowError("Ошибка: ${exception.message}"))
