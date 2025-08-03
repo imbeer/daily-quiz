@@ -252,7 +252,13 @@ fun QuestionReviewCard(
                 if (result.answer.isCorrect) {
                     Image(
                         painter = painterResource(id = R.drawable.radio_button_correct),
-                        contentDescription = "Correct Answer",
+                        contentDescription = stringResource(R.string.correct_answer),
+                        modifier = Modifier.size(20.dp)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.radio_button_incorrect),
+                        contentDescription = stringResource(R.string.incorrect_answer),
                         modifier = Modifier.size(20.dp)
                     )
                 }
