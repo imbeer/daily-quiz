@@ -48,4 +48,8 @@ class QuizStartViewModel(
         }
     }
 
+    fun stopLoading() {
+        _uiState.update { it.copy(isLoading = false) }
+    }
+
 }

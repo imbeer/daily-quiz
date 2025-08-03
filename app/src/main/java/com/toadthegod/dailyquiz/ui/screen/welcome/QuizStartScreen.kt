@@ -195,10 +195,12 @@ fun QuizStartScreen(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is WelcomeEvent.NavigateToQuiz -> {
+                    viewModel.stopLoading()
                     navigator.navigate(QuestionScreenDestination)
                 }
 
                 is WelcomeEvent.ShowError -> {
+                    viewModel.stopLoading()
                     snackbarHostState.showSnackbar(event.message)
                 }
             }

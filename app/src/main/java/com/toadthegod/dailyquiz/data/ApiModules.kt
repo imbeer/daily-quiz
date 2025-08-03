@@ -8,10 +8,12 @@ import com.toadthegod.dailyquiz.data.question.QuizHistoryRepository
 import com.toadthegod.dailyquiz.data.question.database.QuizHistoryDatabase
 import com.toadthegod.dailyquiz.data.question.model.QuizTypeConverters
 import com.toadthegod.dailyquiz.data.question.network.QuestionApiService
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 const val BASEURL = "https://opentdb.com/"
 
@@ -24,8 +26,17 @@ val networkModule = module {
     }
 
     single {
+        OkHttpClient.Builder()
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .build()
+    }
+
+    single {
         Retrofit.Builder()
             .baseUrl(BASEURL)
+            .client(get<OkHttpClient>())
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
