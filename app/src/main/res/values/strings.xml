@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">dailyquiz</string>
+    <string name="app_name">DailyQuiz</string>
     <string name="logo">logo</string>
     <string name="history">История</string>
     <string name="welcome_title">Добро пожаловать\nв DailyQuiz!</string>
