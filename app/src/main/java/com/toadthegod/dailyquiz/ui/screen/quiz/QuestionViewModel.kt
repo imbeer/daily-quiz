@@ -1,11 +1,14 @@
 package com.toadthegod.dailyquiz.ui.screen.quiz
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.toadthegod.dailyquiz.data.question.QuizCache
+import com.toadthegod.dailyquiz.data.question.QuizHistoryRepository
 import com.toadthegod.dailyquiz.domain.model.question.Answer
 import com.toadthegod.dailyquiz.domain.model.question.Question
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 data class QuizState(
     val number: Int = 0,
@@ -13,7 +16,8 @@ data class QuizState(
 )
 
 class QuestionViewModel(
-    private val quizCache: QuizCache
+    private val quizCache: QuizCache,
+    private val quizHistoryRepository: QuizHistoryRepository
 ) : ViewModel() {
     private val _question = MutableStateFlow<Question?>(null)
     val question: StateFlow<Question?> = _question
@@ -47,6 +51,12 @@ class QuestionViewModel(
         quizCache.clear()
         _question.value = null
         _questionState.value = null
+    }
+
+    fun finish() {
+        viewModelScope.launch {
+            quizHistoryRepository.saveCompletedQuiz(quizCache.getCurrentQuiz())
+        }
     }
 
 

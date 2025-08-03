@@ -153,7 +153,10 @@ fun QuestionScreen(
                         onClick = if (!isFinalQuestion) ({
                             viewModel.saveAnswer(selectedOption!!)
                             viewModel.nextQuestion()
-                        }) else ({ navigator.navigate(ResultScreenDestination) }),
+                        }) else ({
+                            viewModel.finish()
+                            navigator.navigate(ResultScreenDestination)
+                        }),
                         modifier = Modifier
                             .padding(horizontal = 6.dp)
                             .fillMaxWidth()
