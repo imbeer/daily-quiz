@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">dailyquiz</string>
     <string name="logo">logo</string>
-    <string name="history_button">История</string>
+    <string name="history">История</string>
     <string name="welcome_title">Добро пожаловать\nв DailyQuiz!</string>
     <string name="start_quiz">Начать викторину</string>
     <string name="no_come_back">Вернуться к предыдущим вопросам нельзя</string>
@@ -24,4 +24,7 @@
     <string name="bad_result">%1$d/%2$d — не расстраивайтесь, попробуйте ещё раз!</string>
     <string name="almost_worst_result">%1$d/%2$d — иногда просто не ваш день. Следующая попытка будет лучше!</string>
     <string name="worst_result">%1$d/%2$d — не отчаивайтесь. Начните заново и удивите себя!</string>
+    <string name="no_quiz_completed">Вы еще не проходили ни одной викторины</string>
+    <string name="delete">Удалить</string>
+    <string name="quiz_number">Quiz %1$d</string>
 </resources>

@@ -45,11 +45,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.HistoryScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.QuestionScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.toadthegod.dailyquiz.R
 import com.toadthegod.dailyquiz.ui.ScreenTransitions
 import com.toadthegod.DailyQuчiz.ui.component.AccentButton
+import com.toadthegod.dailyquiz.ui.screen.history.HistoryScreen
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -67,13 +69,13 @@ fun HistoryButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = stringResource(R.string.history_button),
+                text = stringResource(R.string.history),
                 color = MaterialTheme.colorScheme.background
             )
             Spacer(modifier = Modifier.width(12.dp))
             Icon(
                 imageVector = Icons.Outlined.History,
-                contentDescription = stringResource(R.string.history_button),
+                contentDescription = stringResource(R.string.history),
                 tint = MaterialTheme.colorScheme.background,
                 modifier = Modifier.size(16.dp)
             )
@@ -220,7 +222,7 @@ fun QuizStartScreen(
             } else {
                 WelcomeState(
                     onStartClick = { viewModel.load() },
-                    onHistoryClick = { }
+                    onHistoryClick = { navigator.navigate(HistoryScreenDestination) }
                 )
             }
         }
