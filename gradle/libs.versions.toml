@@ -14,7 +14,7 @@ retrofit = "2.11.0"
 ksp = "2.1.20-2.0.0"
 composeDestinations = "2.1.0"
 moshi = "1.15.2"
-room = "2.6.1"
+room = "2.7.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

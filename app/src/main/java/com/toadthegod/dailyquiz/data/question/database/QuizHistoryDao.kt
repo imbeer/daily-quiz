@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface QuizHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertQuiz(quizEntry: QuizHistoryEntry)
+    suspend fun insertQuiz(quizEntry: QuizHistoryEntry): Long
 
     @Delete
-    suspend fun deleteQuiz(quizEntry: QuizHistoryEntry)
+    suspend fun delete(quizEntry: QuizHistoryEntry)
 
     @Query("SELECT * FROM quiz_history ORDER BY timestamp DESC")
     fun getAllQuizzes(): Flow<List<QuizHistoryEntry>>

@@ -1,4 +1,5 @@
 package com.toadthegod.dailyquiz.data
+
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.toadthegod.dailyquiz.data.question.QuestionRepository
@@ -38,8 +39,13 @@ val repositoryModule = module {
 }
 
 val dbModule = module {
-    single { QuizHistoryDatabase.getDatabase(androidContext()) }
     single { QuizTypeConverters(get()) }
+    single {
+        QuizHistoryDatabase.getDatabase(
+            context = androidContext(),
+            quizTypeConverters = get()
+        )
+    }
     single { get<QuizHistoryDatabase>().quizHistoryDao() }
-    single { QuizHistoryRepository(get(), get()) }
+    single { QuizHistoryRepository(get()) }
 }

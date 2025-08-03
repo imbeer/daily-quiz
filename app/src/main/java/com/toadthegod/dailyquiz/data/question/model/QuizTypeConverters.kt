@@ -1,5 +1,6 @@
 package com.toadthegod.dailyquiz.data.question.model
 
+import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -7,6 +8,7 @@ import com.toadthegod.dailyquiz.domain.model.question.Answer
 import com.toadthegod.dailyquiz.domain.model.question.Question
 
 
+@ProvidedTypeConverter
 class QuizTypeConverters(moshi: Moshi) {
 
     private val questionsListType = Types.newParameterizedType(List::class.java, Question::class.java)
